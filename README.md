@@ -1,5 +1,5 @@
 # X12Parser-laravel-class
-A Laravel PHP class that parses and interprets an X12 message
+A Laravel PHP class that parses and interprets simple X12 messages
 
 
 example of use:
