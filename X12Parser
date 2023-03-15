@@ -1,0 +1,43 @@
+<?php
+
+namespace App\Services;
+
+class X12Parser
+{
+    private $delimiters = [];
+    private $segments = [];
+
+    public function __construct(string $x12Message)
+    {
+        $this->parseDelimiters($x12Message);
+        $this->parseSegments($x12Message);
+    }
+
+    private function parseDelimiters(string $x12Message): void
+    {
+        $this->delimiters = [
+            'segment' => $x12Message[105],
+            'element' => $x12Message[3],
+            'subelement' => $x12Message[104],
+        ];
+    }
+
+    private function parseSegments(string $x12Message): void
+    {
+        $segments = explode($this->delimiters['segment'], $x12Message);
+        foreach ($segments as $segment) {
+            $elements = explode($this->delimiters['element'], $segment);
+            $this->segments[] = $elements;
+        }
+    }
+
+    public function toJSON(): string
+    {
+        return json_encode($this->segments);
+    }
+
+    public function toArray(): array
+    {
+        return $this->segments;
+    }
+}
